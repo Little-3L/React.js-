@@ -69,5 +69,5 @@ module.exports={
 ```bash
 npx webpack-dev-server --mode development --output-public-path dist  
 ```
-打开http://localhost:8080/即可
+打开http://localhost:8080/ 即可。
 注：8080为默认端口，可以在webpack.config.js中修改
