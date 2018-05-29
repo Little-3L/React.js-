@@ -71,3 +71,10 @@ npx webpack-dev-server --mode development --output-public-path dist
 ```
 打开http://localhost:8080/ 即可。
 注：8080为默认端口，可以在webpack.config.js中修改
+
+
+## Ant Design框架的引入
+根据官网的步骤安装引用：
+http://design.alipay.com/develop/web/docs/introduce
+
+## 项目页头页脚模块
