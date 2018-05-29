@@ -78,7 +78,81 @@ npx webpack-dev-server --mode development --output-public-path dist
 http://design.alipay.com/develop/web/docs/introduce
 
 ## 项目页头页脚模块
+网页图标网站：https://www.iconfinder.com/ ，可在此网站下载网页Logo。
+在src下新建js、css、images文件夹，分别存放不同的文件类型，并在js下新建components文件夹与root.js文件（root.js为总组件）。
+### PC端
+在components文件夹下新建pcheader.js
+页面布局采用flex布局，导入antd:
+```bash
+import { Row, Col } from 'antd';
+```
+然后在header标签中引用，写入Logo、导航栏与注册登陆。
+```jsx
+<header>
+        <Row>
+          <Col span={2}></Col>
+          <Col span={4}>
+              <a href="/" className="logo">
+                <img src="./src/images/logo.png" alt="logo"/>
+                <span>ReactNews</span>
+              </a>
+          </Col>
+          <Col span={16}>
+          </Col>
+          <Col span={2}></Col>
+        </Row>
+      </header>
+```
+
+```jsx
+<Menu mode="horizontal" onClick={this.handleClick.bind(this)} selectedKeys={[this.state.current]}>
+               <Menu.Item key="top">
+                 <Icon type="appstore" />头条
+               </Menu.Item>
+               <Menu.Item key="shehui">
+                 <Icon type="appstore" />社会
+               </Menu.Item>
+               <Menu.Item key="guonei">
+                 <Icon type="appstore" />国内
+               </Menu.Item>
+               <Menu.Item key="guoji">
+                 <Icon type="appstore" />国际
+               </Menu.Item>
+               <Menu.Item key="yule">
+                 <Icon type="appstore" />娱乐
+               </Menu.Item>
+               <Menu.Item key="tiyu">
+                 <Icon type="appstore" />体育
+               </Menu.Item>
+               <Menu.Item key="jingji">
+                 <Icon type="appstore" />经济
+               </Menu.Item>
+               {userShow}
+            </Menu>
+```            
+            
 ## 项目注册登录模块
+```jsx
+<Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.mobileVisible} onOk={()=>this.setModalVisible(false)} okText="关闭" onCancel={()=>this.setModalVisible(false)}>
+            <Tabs type="card">
+               <TabPane tab="注册" key="2">
+                  <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
+                      <FormItem label="账户">
+                          <Input placeholder="请输入您的帐号" {...getFieldProps('r_userName')}/>
+                      </FormItem>
+                      <FormItem label="密码">
+                          <Input type="password" placeholder="请输入您的密码" {...getFieldProps('r_password')}/>
+                      </FormItem>
+                      <FormItem label="确认密码">
+                          <Input type="password" placeholder="请再次输入您的密码" {...getFieldProps('r_confirmPassword')}/>
+                      </FormItem>
+                      <Button type="primary" htmlType="submit">注册</Button>
+                   </Form>
+               </TabPane>
+            </Tabs>
+            </Modal>
+```
+
 ## 项目首页模块
 ## 项目详情模块
 ## 项目个人中心模块
