@@ -52,7 +52,7 @@ module.exports={
 ```
 
 7. 使用webpack打包一下,发现在项目目录下生成了一个文件夹dist，文件夹里生成一个文件main.js,这是webpack4默认的打包输出文件，把它引入到index.html中:
-```jsx
+```bash
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -85,20 +85,8 @@ http://design.alipay.com/develop/web/docs/introduce
 页面布局采用flex布局，并使用antd里的Menu组建，导入antd:
 ```bash
 import { Row, Col } from 'antd';
-import {
-  Menu,
-  Icon ,
-  Tabs,
-  message,
-  Form,
-  Input,
-  Button,
-  CheckBox,
-  Modal
-} from 'antd';
-const FormItem = Form.Item;
+import { Menu, Icon} from 'antd';
 const SubMenu = Menu.SubMenu;
-const TabPane = Tabs.TabPane;
 const MenuItemGroup = Menu.ItemGroup;
 ```
 然后在header标签中引用，写入Logo、导航栏与注册登陆。
@@ -198,13 +186,34 @@ import MediaQuery from 'react-responsive';
    </header>
 </div>
 ```
-mobilefooter.js文件一样。
-
-
+mobilefooter.js文件与pcfooter.js文件一样。
             
 ## 项目注册登录模块
+实现点击注册登录跳出模态框，并用Tab进行注册与登陆的切换。
+
+首先安装fetch框架，在js中进行API以及一些HTTP的Ajax请求:
+```bash
+cnpm install fetch --save 
+```
+使用Modal模态框和Tab标签，导入相关ntd:
+```bash
+import {
+  Menu,
+  Icon ,
+  Tabs,
+  message,
+  Form,
+  Input,
+  Button,
+  CheckBox,
+  Modal
+} from 'antd';
+const FormItem = Form.Item;
+const TabPane = Tabs.TabPane;
+```
+弹出框内容，因为是隐藏内容，所以放哪都可以：
 ```jsx
-<Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.mobileVisible} onOk={()=>this.setModalVisible(false)} okText="关闭" onCancel={()=>this.setModalVisible(false)}>
+<Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.modalVisible} onOk={()=>this.setModalVisible(false)} okText="关闭" onCancel={()=>this.setModalVisible(false)}>
             <Tabs type="card">
                <TabPane tab="注册" key="2">
                   <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
@@ -222,6 +231,63 @@ mobilefooter.js文件一样。
                </TabPane>
             </Tabs>
 </Modal>
+```
+定义userShow判断用户登录状态,并在Menu模块最后调用{userShow}：
+```bash
+const userShow =this.state.hasLogined
+    ?
+    <Menu.Item key="logout" className="register">
+     <Button type="primary" htmlType="button">{this.state.userNickName}</Button>
+     &nbsp;&nbsp;
+     <Link target="_blank">
+      <Button type="dashed" htmlType="button">个人中心</Button>
+     </Link>
+     &nbsp;&nbsp;
+     <Button type="ghost" htmlType="button">退出</Button>
+    </Menu.Item>
+    :
+    <Menu.Item key="register" className="register">
+     <Icon type="appstore" />注册/登录
+    </Menu.Item>;
+```
+
+控制模态框是否显示或隐藏
+```bash
+  setModalVisible(value){
+    this.setState({modalVisible: value});
+  };
+```
+点击事件
+```bash
+handleClick(e){
+    if(e.key = "register"){
+      this.setState({current:'register'});
+      this.setModalVisible(true);
+    }
+    else{
+      {
+      this.setState({current: e.key});
+    }
+    }
+  };
+```
+页面开始向 API进行提交数据:
+```bash
+  handleSubmit(e){
+		e.preventDefault();
+		var myFetchOptions = {
+			method: 'GET'
+		};
+		var formData= this.props.form.getFieldsValue();
+		console.log(formData);
+		fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=register&username=userName&password=password&r_userName="+formData.r_userName+"&r_password="+formData.r_password+"&r_confirmPassword="+formData.r_confirmPassword,myFetchOptions).
+		then(response=>response.json()).then(json=>{
+			this.setState({userNickName:json.NickUserName,userid:json.UserId});
+
+		});
+		message.success("请求成功！");
+		this.setModalVisible(false);
+};
 ```
 
 ## 项目首页模块
