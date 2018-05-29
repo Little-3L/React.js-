@@ -25,3 +25,47 @@ cnpm install react react-dom
 ```
 
 5. 安装babel
+```bash
+cnpm install babel-loader@next @babel/core @babel/preset-react --save 
+```
+6. 项目目录下新建配置文件webpack.config.js:
+```jsx
+var path = require("path");
+
+module.exports={
+  module:{
+    rules:[
+      {
+        test:/\.js$/,
+        exclude:/(node_modules|bower_components)/,
+        use:{
+          loader:'babel-loader',
+          options:{
+            presets: ['@babel/preset-react'],
+            plugins: ['react-html-attrs']
+          }
+        }
+      },
+    ]
+  },
+};
+```
+
+7. 使用webpack打包一下,发现在项目目录下生成了一个文件夹dist，文件夹里生成一个文件main.js,这是webpack4默认的打包输出文件，把它引入到index.html中:
+```jsx
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>ReactNews</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="./dist/main.js"></script>
+  </body>
+</html>
+```
+8. 实现热加载，cmd输入：
+```bash
+npx webpack-dev-server --mode development --output-public-path dist  
+```
