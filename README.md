@@ -81,7 +81,7 @@ http://design.alipay.com/develop/web/docs/introduce
 网页图标网站：https://www.iconfinder.com/ ，可在此网站下载网页Logo。
 在src下新建js、css、images文件夹，分别存放不同的文件类型，并在js下新建components文件夹与root.js文件（root.js为总组件）。
 ### PC端
-在components文件夹下新建pcheader.js。
+1. 在components文件夹下新建pcheader.js文件。
 页面布局采用flex布局，并使用antd里的Menu组建，导入antd:
 ```bash
 import { Row, Col } from 'antd';
@@ -116,36 +116,91 @@ const MenuItemGroup = Menu.ItemGroup;
           </Col>
           <Col span={2}></Col>
         </Row>
-      </header>
+</header>
 ```
 
 Menu模块：
 ```jsx
 <Menu mode="horizontal" onClick={this.handleClick.bind(this)} selectedKeys={[this.state.current]}>
-               <Menu.Item key="top">
-                 <Icon type="appstore" />头条
-               </Menu.Item>
-               <Menu.Item key="shehui">
-                 <Icon type="appstore" />社会
-               </Menu.Item>
-               <Menu.Item key="guonei">
-                 <Icon type="appstore" />国内
-               </Menu.Item>
-               <Menu.Item key="guoji">
-                 <Icon type="appstore" />国际
-               </Menu.Item>
-               <Menu.Item key="yule">
-                 <Icon type="appstore" />娱乐
-               </Menu.Item>
-               <Menu.Item key="tiyu">
-                 <Icon type="appstore" />体育
-               </Menu.Item>
-               <Menu.Item key="jingji">
-                 <Icon type="appstore" />经济
-               </Menu.Item>
-               {userShow}
+     <Menu.Item key="top">
+         <Icon type="appstore" />头条
+     </Menu.Item>
+     <Menu.Item key="shehui">
+         <Icon type="appstore" />社会
+     </Menu.Item>
+     <Menu.Item key="guonei">
+         <Icon type="appstore" />国内
+     </Menu.Item>
+     <Menu.Item key="guoji">
+          <Icon type="appstore" />国际
+     </Menu.Item>
+     <Menu.Item key="yule">
+          <Icon type="appstore" />娱乐
+     </Menu.Item>
+     <Menu.Item key="tiyu">
+          <Icon type="appstore" />体育
+     </Menu.Item>
+     <Menu.Item key="jingji">
+          <Icon type="appstore" />经济
+     </Menu.Item>
 </Menu>
-```            
+``` 
+2.  在components文件夹下新建pcfooter.js文件。
+```jsx
+import React from 'react';
+import { Row, Col } from 'antd';
+
+export default class PcFooter extends React.Component{
+  render(){
+    return(
+      <footer>
+        <Row>
+          <Col span={2}></Col>
+          <Col span={20} className="footer">
+              &copy;&nbsp;2018 ReactNews. All Rights Reserved.
+          </Col>
+          <Col span={2}></Col>
+        </Row>
+      </footer>
+    );
+  }
+}
+```
+
+### 移动端
+安装插件react-responsive：
+```bash
+cnpm install react-responsive --save 
+```
+在root.js文件里导入：
+```bash
+import MediaQuery from 'react-responsive';
+```
+当设备宽度大于1224px时，显示PC端Header,否则，反之。
+```bash
+<div>
+   <MediaQuery query="(min-device-width:1224px)">
+       <PcHeader></PcHeader>
+       <PcFooter></PcFooter>
+   </MediaQuery>
+   <MediaQuery query="(max-device-width:1224px)">
+       <MobileHeader></MobileHeader>
+       <MobileFooter></MobileFooter>
+   </MediaQuery>
+</div>
+```
+在components文件夹下新建mobileheader.js文件。
+```bash
+<div id="mobileheader">
+   <header>
+     <img src="./src/images/logo.png" alt="logo"/>
+   <span>ReactNews</span>
+   </header>
+</div>
+```
+mobilefooter.js文件一样。
+
+
             
 ## 项目注册登录模块
 ```jsx
