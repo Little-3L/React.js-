@@ -81,10 +81,25 @@ http://design.alipay.com/develop/web/docs/introduce
 网页图标网站：https://www.iconfinder.com/ ，可在此网站下载网页Logo。
 在src下新建js、css、images文件夹，分别存放不同的文件类型，并在js下新建components文件夹与root.js文件（root.js为总组件）。
 ### PC端
-在components文件夹下新建pcheader.js
-页面布局采用flex布局，导入antd:
+在components文件夹下新建pcheader.js。
+页面布局采用flex布局，并使用antd里的Menu组建，导入antd:
 ```bash
 import { Row, Col } from 'antd';
+import {
+  Menu,
+  Icon ,
+  Tabs,
+  message,
+  Form,
+  Input,
+  Button,
+  CheckBox,
+  Modal
+} from 'antd';
+const FormItem = Form.Item;
+const SubMenu = Menu.SubMenu;
+const TabPane = Tabs.TabPane;
+const MenuItemGroup = Menu.ItemGroup;
 ```
 然后在header标签中引用，写入Logo、导航栏与注册登陆。
 ```jsx
@@ -104,6 +119,7 @@ import { Row, Col } from 'antd';
       </header>
 ```
 
+Menu模块：
 ```jsx
 <Menu mode="horizontal" onClick={this.handleClick.bind(this)} selectedKeys={[this.state.current]}>
                <Menu.Item key="top">
@@ -128,7 +144,7 @@ import { Row, Col } from 'antd';
                  <Icon type="appstore" />经济
                </Menu.Item>
                {userShow}
-            </Menu>
+</Menu>
 ```            
             
 ## 项目注册登录模块
@@ -150,7 +166,7 @@ import { Row, Col } from 'antd';
                    </Form>
                </TabPane>
             </Tabs>
-            </Modal>
+</Modal>
 ```
 
 ## 项目首页模块
