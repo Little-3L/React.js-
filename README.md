@@ -212,6 +212,25 @@ import {
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 ```
+
+定义userShow判断用户登录状态,并在Menu模块最后调用{userShow}：
+```bash
+const userShow =this.state.hasLogined
+    ?
+    <Menu.Item key="logout" className="register">
+     <Button type="primary" htmlType="button">{this.state.userNickName}</Button>
+     &nbsp;&nbsp;
+     <Link target="_blank">
+      <Button type="dashed" htmlType="button">个人中心</Button>
+     </Link>
+     &nbsp;&nbsp;
+     <Button type="ghost" htmlType="button">退出</Button>
+    </Menu.Item>
+    :
+    <Menu.Item key="register" className="register">
+     <Icon type="appstore" />注册/登录
+    </Menu.Item>;
+```
 弹出框注册内容，因为是隐藏内容，所以放哪都可以：
 ```jsx
 <Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.modalVisible} onOk={()=>this.setModalVisible(false)} okText="关闭" onCancel={()=>this.setModalVisible(false)}>
@@ -232,24 +251,6 @@ const TabPane = Tabs.TabPane;
                </TabPane>
             </Tabs>
 </Modal>
-```
-定义userShow判断用户登录状态,并在Menu模块最后调用{userShow}：
-```bash
-const userShow =this.state.hasLogined
-    ?
-    <Menu.Item key="logout" className="register">
-     <Button type="primary" htmlType="button">{this.state.userNickName}</Button>
-     &nbsp;&nbsp;
-     <Link target="_blank">
-      <Button type="dashed" htmlType="button">个人中心</Button>
-     </Link>
-     &nbsp;&nbsp;
-     <Button type="ghost" htmlType="button">退出</Button>
-    </Menu.Item>
-    :
-    <Menu.Item key="register" className="register">
-     <Icon type="appstore" />注册/登录
-    </Menu.Item>;
 ```
 
 控制模态框是否显示或隐藏
@@ -290,8 +291,72 @@ handleClick(e){
 		this.setModalVisible(false);
 };
 ```
-### 移动端
+现在通过Tab切换来写登录模块，
+在Tab标签里加入onChange事件：
+```bash
+<Tabs type="card" onChange={this.callback.bind(this)}>
+```
+定义callback：
+```bash
+callback(key){
+  if(key==1){
+    this.setState({action:"login"});
+  }
+  else if(key==2){
+    this.setState({action:"register"});
+  }
+}
 
+```
+写入登录内容：
+```bash
+            <TabPane tab="登录" key="1">
+               <Form horizontal="true" onSubmit={this.handleSubmit.bind(this)}>
+                   <FormItem label="账户">
+                       <Input placeholder="请输入您的帐号" {...getFieldProps('userName')}/>
+                   </FormItem>
+                   <FormItem label="密码">
+                       <Input type="password" placeholder="请输入您的密码" {...getFieldProps('password')}/>
+                   </FormItem>
+                   <Button type="primary" htmlType="submit">登录</Button>
+                </Form>
+            </TabPane>
+```
+
+所以fetch就可以变为：
+```bash
+fetch("http://newsapi.gugujiankong.com/Handler.ashx?action="+this.state.action
+    +"&username="+formData.userName+"password="+formData.password
+    +"&r_userName="+formData.r_userName+"&r_password="
+    +formData.r_password+"&r_confirmPassword="
+    +formData.r_confirmPassword,myFetchOptions)
+```
+这样就可以通过action知道下一步要做什么动作。
+若请求成功，就将hasLogined设置为true:
+```bash
+    if(this.state.action=="login"){
+      this.setState({hasLogined:true});
+    }
+```
+### 移动端
+在右上角放置一个图标按钮来控制注册登录。
+判断用户是否登录：若登陆显示一个link,可进入用户中心；若未登录，则显示一个小图标，点击调用登录事件。
+```bash
+const userShow = this.state.hasLogined ?
+    <Link>
+    	<Icon type="inbox"/>
+    </Link>
+    :
+    <Icon type="setting" onClick={this.login.bind(this)}/>
+```
+定义Login方法，即展示出Modal层：
+```bash
+login(){
+  this.setModalVisible(true);
+  	};
+```
+
+其他参数可直接拷PC端代码。
 
 ## 项目首页模块
 ## 项目详情模块
