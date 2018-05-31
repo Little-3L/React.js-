@@ -195,6 +195,7 @@ mobilefooter.js文件与pcfooter.js文件一样。
 ```bash
 cnpm install fetch --save 
 ```
+### PC端
 使用Modal模态框和Tab标签，导入相关ntd:
 ```bash
 import {
@@ -211,7 +212,7 @@ import {
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 ```
-弹出框内容，因为是隐藏内容，所以放哪都可以：
+弹出框注册内容，因为是隐藏内容，所以放哪都可以：
 ```jsx
 <Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.modalVisible} onOk={()=>this.setModalVisible(false)} okText="关闭" onCancel={()=>this.setModalVisible(false)}>
             <Tabs type="card">
@@ -289,6 +290,8 @@ handleClick(e){
 		this.setModalVisible(false);
 };
 ```
+### 移动端
+
 
 ## 项目首页模块
 ## 项目详情模块
